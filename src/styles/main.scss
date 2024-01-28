@@ -1,0 +1,18 @@
+@use 'mixins' as m;
+
+
+.element {
+  @include m.below(600) {
+    background: blue
+  }
+
+  @include m.above(600) {
+    background: green;
+  }
+
+  @include m.between(600, 1200) {
+    background: red;
+  }
+}
+
+

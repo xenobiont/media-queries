@@ -1,0 +1,51 @@
+@use 'sass:math';
+
+@mixin above($breakpoint) {
+  @media screen and (min-width: $breakpoint + 1px) {
+    @content;
+  }
+}
+
+@mixin below($breakpoint) {
+  // by multiplying  * 1px we just convert value to pixels
+  @media screen and (max-width: $breakpoint * 1px) {
+    @content;
+  }
+}
+
+@mixin between($breakpoint--min, $breakpoint--max) {
+  @media screen and (max-width: $breakpoint--min * 1px) and (min-width: $breakpoint--max + 1px) {
+    @content;
+  }
+}
+
+// ADVANCED
+
+@function strip-unit($number) {
+	@if type-of($number) == 'number' and not unitless($number) {
+		@return $number / ($number * 0 + 1);
+	}
+	@return $number;
+}
+
+@function px-to-em($value, $base: 16) {
+	@return #{math.div(strip-unit($value), strip-unit($base))}em;
+}
+
+@mixin above-em($breakpoint) {
+	@media screen and (min-width: u.px-to-em($breakpoint + 1px)) {
+		@content;
+	}
+}
+
+@mixin below-em($breakpoint) {
+	@media screen and (max-width: u.px-to-em($breakpoint * 1px)) {
+		@content;
+	}
+}
+
+@mixin between-em($breakpoint--min, $breakpoint--max) {
+	@media screen and (max-width: u.px-to-em($breakpoint--min * 1px)) and (min-width: u.px-to-em($breakpoint--max + 1px)) {
+		@content;
+	}
+}
